@@ -33,18 +33,18 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::prefix('projects')->group(function ()
+Route::prefix('projects')->middleware('auth')->group(function ()
 {
     Route::get('/', 'ProjectController@index')->name('projects');
     Route::post('/', 'ProjectController@store')->name('store.project');
     Route::put('/{project}', 'ProjectController@edit')->name('edit.project');
     Route::delete('/{project}', 'ProjectController@delete')->name('delete.project');
-})->middleware('auth');
+});
 
-Route::prefix('tasks')->group(function ()
+Route::prefix('tasks')->middleware('auth')->group(function ()
 {
     Route::post('/', 'TaskController@store')->name('store.task');
     Route::put('/{task}', 'TaskController@edit')->name('edit.task');
     Route::put('/{task}/change-position', 'TaskController@changePosition')->name('change.position.task');
     Route::delete('/{task}', 'TaskController@delete')->name('delete.task');
-})->middleware('auth');
+});
